@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import Weather from "./components/Weather";
+
 export default function App() {
 	const [lat, setLat] = useState([]);
 	const [long, setLong] = useState([]);
@@ -23,17 +24,11 @@ export default function App() {
 				});
 		};
 		fetchData();
-
-		
 	}, [lat, long]);
 
 	return (
 		<div className="App">
-			{typeof data.main != "undefined" ? (
-				<Weather weatherData={data} pressureDiff={0} />
-			) : (
-				<div></div>
-			)}
+			<Weather weatherData={data} />
 		</div>
 	);
 }

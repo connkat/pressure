@@ -17,7 +17,12 @@ const Weather = ({ weatherData, pressureDiff }) => {
     <h3>{weatherData.name}</h3>
     {pressureDiff < 6 ? (
       <p>{altReason}</p>
-    ) : <></>}
+    ) : <>
+    <div className="header">City Name: {weatherData.name}</div>
+        <p>Temprature: {weatherData.main.temp}</p>
+        <p>Sunrise: {weatherData.sys.sunrise}</p>
+        <p>Sunset: {weatherData.sys.sunset}</p>
+        <p>Description: {weatherData.weather[0].description}</p></>}
   </div>
 );
   }
