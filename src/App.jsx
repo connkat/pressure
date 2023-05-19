@@ -1,11 +1,43 @@
-import "./App.css";
 import React, { useEffect, useState } from "react";
+// import subDays from "date-fns/esm/fp/subDays/index.js";
+import { Meteostat } from "meteostat";
+
+import "./App.css";
+
 import Weather from "./components/Weather";
+import Loading from "./components/Loading";
 
 export default function App() {
 	const [lat, setLat] = useState([]);
 	const [long, setLong] = useState([]);
 	const [data, setData] = useState([]);
+
+	const options = {
+		params: {
+			maxResults: "50",
+		},
+		headers: {
+			"X-RapidAPI-Key": process.env.METEO_API_KEY,
+			"X-RapidAPI-Host": "youtube-v31.proce.rapidapi.com",
+		},
+	};
+
+	const fetchFromAPI = async (url) => {
+		const { data } = await axios.get(
+			`${process.env.METEO_API_URL}/${url}`,
+			options
+		);
+		return data;
+	};
+
+	// let config = {
+	// 	params: {
+	// 		lat,
+	// 		long,
+	// 		start: subDays(new Date() - 1),
+	// 		end: new Date(),
+	// 	},
+	// };
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -14,21 +46,30 @@ export default function App() {
 				setLong(position.coords.longitude);
 			});
 
-			await fetch(
-				`${process.env.REACT_APP_API_URL}/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`
-			)
-				.then((res) => res.json())
-				.then((result) => {
-					setData(result);
-					console.log(result);
+			const meteostat = new Meteostat(process.env.METEO_API_KEY);
+
+			try {
+				const { result } = await meteostat.stations.nearby({
+					lat: lat,
+					long: long,
 				});
+				console.log(result);
+				setData(result);
+			} catch (error) {
+				console.log(error);
+			}
 		};
 		fetchData();
 	}, [lat, long]);
 
 	return (
 		<div className="App">
-			<Weather weatherData={data} />
+			{typeof data.main != "undefined" ? (
+				// <Weather weatherData={data} />
+				{ data }
+			) : (
+				<Loading />
+			)}
 		</div>
 	);
 }
