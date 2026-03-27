@@ -7,6 +7,7 @@ interface Props {
   diff: number;
   rising: boolean;
   falling: boolean;
+  bigChange: boolean;
   latest: number | null;
   dateLabel: string;
   locationName: string;
@@ -19,6 +20,7 @@ export default function PressureModal({
   diff,
   rising,
   falling,
+  bigChange,
   latest,
   dateLabel,
   locationName,
@@ -44,11 +46,9 @@ export default function PressureModal({
         <div className="text-center py-4">
           <span
             className={`text-6xl font-bold tabular-nums ${
-              rising
-                ? "text-emerald-600/50 dark:text-emerald-400/50"
-                : falling
-                  ? "text-rose-600/50 dark:text-rose-400/50"
-                  : "text-zinc-900 dark:text-zinc-50"
+              bigChange
+                ? "text-rose-600/50 dark:text-rose-400/50"
+                : "text-zinc-900 dark:text-zinc-400"
             }`}
           >
             {diff >= 0 ? "+" : ""}

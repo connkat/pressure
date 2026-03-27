@@ -42,11 +42,8 @@ export default function PressureDisplay({
       <div className="text-center cursor-pointer" onClick={() => setShowMessage((v) => !v)}>
         {showMessage ? (
           <p
-            className={`text-base font-medium ${
-              bigChange
-                ? "text-rose-600 dark:text-rose-400"
-                : "text-zinc-500 dark:text-zinc-400"
-            }`}
+            className={`text-base font-medium text-zinc-500 dark:text-zinc-400
+              =`}
           >
             {message}
           </p>
@@ -57,14 +54,16 @@ export default function PressureDisplay({
         )}
       </div>
 
-      <div className="flex justify-end max-w-lg mx-auto w-full mt-16">
-        <button
-          onClick={() => setShowMore(true)}
-          className="px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-        >
-          More
-        </button>
-      </div>
+      {showMessage && (
+        <div className="flex justify-end max-w-lg mx-auto w-full mt-16">
+          <button
+            onClick={() => setShowMore(true)}
+            className="hover-glitch px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          >
+            <span className="glitch-label">Why?</span>
+          </button>
+        </div>
+      )}
 
       {showMore && (
         <PressureModal
@@ -74,6 +73,7 @@ export default function PressureDisplay({
           diff={diff}
           rising={rising}
           falling={falling}
+          bigChange={bigChange}
           latest={latest}
           dateLabel={dateLabel}
           locationName={locationName}

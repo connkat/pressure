@@ -65,6 +65,14 @@ body {
   animation: glitch-text 3s steps(1) infinite;
 }
 
+.glitch-label {
+  display: inline-block;
+}
+
+.hover-glitch:hover .glitch-label {
+  animation: glitch-text 2s steps(1) infinite;
+}
+
 @keyframes glitch-border {
   0%, 100% {
     border-color: #e4e4e7;
