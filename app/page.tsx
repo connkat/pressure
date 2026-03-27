@@ -5,6 +5,13 @@ const BLAME_MESSAGES = [
   "Nope, not the weather. Go drink some water.",
   "Not the weather today my friend.",
   "No big pressure change right now, maybe get some sleep.",
+  "Pressure's steady. Have you tried eating something?",
+  "Can't blame the Chinook today. Maybe it's just a Monday.",
+  "Skies are stable. Could be stress, could be posture.",
+  "No pressure drama today. When did you last go outside?",
+  "Atmosphere is chill. Your neck muscles might not be.",
+  "Not the barometer's fault this time.",
+  "Pressure looks fine. Hydration check?",
 ];
 
 const DEFAULT_LAT = 51.0447;

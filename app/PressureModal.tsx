@@ -25,10 +25,7 @@ export default function PressureModal({
 }: Props) {
   return (
     <>
-      <div
-        className="fixed inset-0 bg-black/40 z-40"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
 
       <div className="glitch-modal fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-md rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl">
         <div className="flex items-center justify-between px-5 pt-5 pb-2">
@@ -44,19 +41,31 @@ export default function PressureModal({
           </button>
         </div>
 
-        {latest !== null && (
-          <div className="text-center py-4">
-            <span className="text-6xl font-bold tabular-nums text-zinc-900 dark:text-zinc-50">
-              {latest.toFixed(0)}
-            </span>
-            <span className="ml-2 text-xl text-zinc-500 dark:text-zinc-400">
-              hPa
-            </span>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
-              current
-            </p>
-          </div>
-        )}
+        <div className="text-center py-4">
+          <span
+            className={`text-6xl font-bold tabular-nums ${
+              rising
+                ? "text-emerald-600/50 dark:text-emerald-400/50"
+                : falling
+                  ? "text-rose-600/50 dark:text-rose-400/50"
+                  : "text-zinc-900 dark:text-zinc-50"
+            }`}
+          >
+            {diff >= 0 ? "+" : ""}
+            {diff.toFixed(1)}
+          </span>
+          <span className="ml-2 text-xl text-zinc-500 dark:text-zinc-400">
+            hPa
+          </span>
+          <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
+            {rising ? "rising" : falling ? "falling" : "steady"}
+          </p>
+          <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-3 px-4">
+            Pressure changes greater than 10hPa in a short period of time can
+            cause migraines. If you are sensitive to pressure changes, then even
+            5hPa might be enough to trigger symptoms.
+          </p>
+        </div>
 
         <div className="divide-y divide-zinc-100 dark:divide-zinc-800 border-t border-zinc-100 dark:border-zinc-800">
           <div className="flex items-center justify-between px-5 py-4">
@@ -75,24 +84,16 @@ export default function PressureModal({
               {yesterdayMean.toFixed(1)} hPa
             </span>
           </div>
-          <div className="flex items-center justify-between px-5 py-4">
-            <span className="text-sm text-zinc-500 dark:text-zinc-400">
-              Change
-            </span>
-            <span
-              className={`text-sm font-semibold tabular-nums ${
-                rising
-                  ? "text-emerald-600 dark:text-emerald-400"
-                  : falling
-                    ? "text-rose-600 dark:text-rose-400"
-                    : "text-zinc-500 dark:text-zinc-400"
-              }`}
-            >
-              {diff >= 0 ? "+" : ""}
-              {diff.toFixed(1)} hPa{" "}
-              {rising ? "rising" : falling ? "falling" : "steady"}
-            </span>
-          </div>
+          {latest !== null && (
+            <div className="flex items-center justify-between px-5 py-4">
+              <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                Current
+              </span>
+              <span className="text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-50">
+                {latest.toFixed(0)} hPa
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </>
