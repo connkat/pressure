@@ -54,10 +54,13 @@ export default function PressureDisplay({
             {message}
           </p>
         ) : (
-          <h4 className="text-2xl text-zinc-500 dark:text-zinc-400 font-[family-name:'Pencerio'] w-full transition-colors hover:text-zinc-800 dark:hover:text-zinc-200">
-            <span className="hidden md:inline">Is your migraine from a Chinook or something else?</span>
-            <span className="md:hidden">Tap to find out if your migraine from a Chinook or something else?</span>
-          </h4>
+          <>
+            <h4 className="text-2xl text-zinc-500 dark:text-zinc-400 font-[family-name:'Pencerio'] w-full transition-colors hover:text-zinc-800 dark:hover:text-zinc-200">
+              <span className="hidden md:inline">Is your migraine from a Chinook or something else?</span>
+              <span className="md:hidden">Tap to find out if your migraine from a Chinook or something else?</span>
+            </h4>
+            <p className="hidden md:block text-xs text-zinc-400 dark:text-zinc-500 mt-1">(click to find out)</p>
+          </>
         )}
       </div>
 
