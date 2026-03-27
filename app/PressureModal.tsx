@@ -95,6 +95,16 @@ export default function PressureModal({
             </div>
           )}
         </div>
+        <div className="px-5 py-3 text-center">
+          <a
+            href="https://open-meteo.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+          >
+            Data from Open-Meteo
+          </a>
+        </div>
       </div>
     </>
   );
