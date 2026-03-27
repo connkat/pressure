@@ -33,7 +33,7 @@ export default function PressureDisplay({
 
   return (
     <div className="w-screen space-y-6">
-      <div className="text-center pb-8">
+      <div className="text-center pb-24">
         <h2 className="glitch-text text-5xl text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-4">
           Pressure
         </h2>

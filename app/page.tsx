@@ -73,7 +73,7 @@ export default async function Home() {
   const latest = [...todayValues].reverse().find((v) => v !== null) ?? null;
 
   return (
-    <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex flex-col items-center justify-center px-4 font-sans">
+    <main className="min-h-screen bg-zinc-50 dark:bg-zinc-950 flex flex-col items-center pt-[25vh] px-4 font-sans">
       <PressureDisplay
         message={blameMessage}
         bigChange={bigChange}
