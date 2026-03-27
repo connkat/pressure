@@ -33,6 +33,12 @@ export default function PressureDisplay({
 
   return (
     <div className="w-screen space-y-6">
+      {!showMessage && (
+        <div
+          className="fixed inset-0 z-10 md:hidden"
+          onClick={() => setShowMessage(true)}
+        />
+      )}
       <div className="text-center pb-24">
         <h2 className="glitch-text text-5xl text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-4">
           Pressure
@@ -49,7 +55,8 @@ export default function PressureDisplay({
           </p>
         ) : (
           <h4 className="text-2xl text-zinc-500 dark:text-zinc-400 font-[family-name:'Pencerio'] w-full transition-colors hover:text-zinc-800 dark:hover:text-zinc-200">
-            Is your migraine from a Chinook or something else?
+            <span className="hidden md:inline">Is your migraine from a Chinook or something else?</span>
+            <span className="md:hidden">Tap to find out if your migraine from a Chinook or something else?</span>
           </h4>
         )}
       </div>
