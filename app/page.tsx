@@ -1,9 +1,10 @@
+import { connection } from "next/server";
 import PressureDisplay from "./PressureDisplay";
 
 const BLAME_MESSAGES = [
   "Nope, not the weather. Go drink some water.",
   "Not the weather today my friend.",
-  "No pressure issues right now, maybe get some sleep.",
+  "No big pressure change right now, maybe get some sleep.",
 ];
 
 const DEFAULT_LAT = 51.0447;
@@ -27,6 +28,7 @@ interface OpenMeteoResponse {
 }
 
 export default async function Home() {
+  await connection();
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
@@ -58,7 +60,8 @@ export default async function Home() {
 
   const blameMessage = bigChange
     ? "It's not your fault, there's a pressure change."
-    : BLAME_MESSAGES[today.getDate() % BLAME_MESSAGES.length];
+    // eslint-disable-next-line react-hooks/purity
+    : BLAME_MESSAGES[Math.floor(Math.random() * BLAME_MESSAGES.length)];
 
   const latest = [...todayValues].reverse().find((v) => v !== null) ?? null;
 

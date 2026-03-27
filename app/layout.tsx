@@ -27,6 +27,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <link
+        rel="stylesheet"
+        href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&f[]=pencerio&display=swap"
+        precedence="default"
+      />
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

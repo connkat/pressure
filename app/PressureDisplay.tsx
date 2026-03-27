@@ -31,15 +31,16 @@ export default function PressureDisplay({
   const [showMore, setShowMore] = useState(false);
 
   return (
-    <div className="w-full max-w-md space-y-6">
-      <div className="text-center">
-        <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">
-          Surface Pressure
-        </p>
-        <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
-          {locationName} &middot; {dateLabel}
-        </p>
+    <div className="w-screen space-y-6">
+      <div className="text-center pb-8">
+        <h2 className="glitch-text text-5xl text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-4">
+          Pressure
+        </h2>
       </div>
+
+      <h4 className="text-2xl text-zinc-500 dark:text-zinc-400 font-[family-name:'Pencerio'] w-full text-center">
+        Is your migraine from a Chinook or something else?
+      </h4>
 
       <p
         className={`text-center text-base font-medium ${
@@ -51,12 +52,12 @@ export default function PressureDisplay({
         {message}
       </p>
 
-      <div className="text-center">
+      <div className="flex justify-end max-w-lg mx-auto w-full mt-8">
         <button
           onClick={() => setShowMore(true)}
-          className="text-sm font-medium text-zinc-400 dark:text-zinc-500 underline underline-offset-2 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors"
+          className="px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         >
-          more
+          More
         </button>
       </div>
 
