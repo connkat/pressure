@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Pressure",
-  description: "Surface pressure today vs yesterday",
+  description: "Understand if the pressure change in YYC is causing your migraine",
 };
 
 export default function RootLayout({

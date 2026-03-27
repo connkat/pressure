@@ -1,5 +1,7 @@
 # Pressure
 
+![Pressure](public/screenshot.png)
+
 Is your migraine from a Chinook or something else?
 
 Pressure compares today's mean atmospheric surface pressure against yesterday's in Calgary, AB. If the change is significant (≥ 10 hPa), it lets you know the weather might be to blame.
