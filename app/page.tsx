@@ -15,6 +15,17 @@ const BLAME_MESSAGES = [
   "Pressure looks fine. Hydration check?",
 ];
 
+const MAYBE_MESSAGES = [
+  "There's a small pressure change. Maybe it's the weather, maybe not.",
+  "Slight pressure change detected. Could be the weather, could be your posture.",
+  "A little pressure shift. Maybe it's the Chinook, maybe it's just you.",
+  "Minor pressure change. Could be the weather, could be stress.",
+];
+
+function pickRandom(messages: string[]): string {
+  return messages[Math.floor(Math.random() * messages.length)];
+}
+
 const DEFAULT_LAT = 51.0447;
 const DEFAULT_LON = -114.0719;
 const LOCATION_NAME = "Calgary, AB";
@@ -76,12 +87,12 @@ export default async function Home() {
   }
 
   const diff = changes[48];
-  const bigChange = diff !== undefined && Math.abs(diff) >= 10;
+  const size = diff === undefined ? 0 : Math.abs(diff);
 
-  const blameMessage = bigChange
-    ? "It's not your fault, there's a pressure change."
-    // eslint-disable-next-line react-hooks/purity
-    : BLAME_MESSAGES[Math.floor(Math.random() * BLAME_MESSAGES.length)];
+  const blameMessage =
+    size >= 10
+      ? "It's not your fault, there's a pressure change."
+      : pickRandom(size >= 5 ? MAYBE_MESSAGES : BLAME_MESSAGES);
 
   const latest = data.current.surface_pressure ?? null;
 
