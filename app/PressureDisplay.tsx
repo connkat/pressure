@@ -43,41 +43,47 @@ export default function PressureDisplay({
         </h2>
       </div>
 
-      <div className="text-center cursor-pointer" onClick={() => setShowMessage((v) => !v)}>
-        {showMessage ? (
-          <>
-            <p className={`mt-6 text-4xl font-semibold tabular-nums ${changeColor(diff)}`}>
-              {diff === undefined ? "—" : `${diff >= 0 ? "+" : ""}${diff.toFixed(1)}`}
-              <span className="text-base font-normal text-zinc-400 dark:text-zinc-500 ml-1">hPa</span>
-            </p>
-            <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-1">
-              change in the last 48 hours
-            </p>
-            <p className="mt-24 text-base font-medium text-zinc-500 dark:text-zinc-400">
-              {message}
-            </p>
-          </>
-        ) : (
-          <>
-            <h4 className="text-2xl text-zinc-500 dark:text-zinc-400 font-['Pencerio'] w-full transition-colors hover:text-zinc-800 dark:hover:text-zinc-200">
-              <span className="hidden md:inline">Is your migraine from a Chinook or something else?</span>
-              <span className="md:hidden">Tap to find out if your migraine from a Chinook or something else?</span>
-            </h4>
-            <p className="hidden md:block text-xs text-zinc-400 dark:text-zinc-500 mt-1">(click to find out)</p>
-          </>
-        )}
+      {/* Both states share one grid cell so the section keeps the same height */}
+      <div className="grid text-center cursor-pointer" onClick={() => setShowMessage((v) => !v)}>
+        <div
+          aria-hidden={!showMessage}
+          className={`col-start-1 row-start-1 transition-all duration-500 ${
+            showMessage ? "opacity-100 translate-y-0" : "invisible opacity-0 translate-y-1"
+          }`}
+        >
+          <p className={`text-4xl font-semibold tabular-nums ${changeColor(diff)}`}>
+            {diff === undefined ? "—" : `${diff >= 0 ? "+" : ""}${diff.toFixed(1)}`}
+            <span className="text-base font-normal text-zinc-400 dark:text-zinc-500 ml-1">hPa</span>
+          </p>
+          <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-1">
+            change in the last 48 hours
+          </p>
+          <p className="mt-12 text-lg text-zinc-500 dark:text-zinc-400">
+            {message}
+          </p>
+        </div>
+        <div
+          aria-hidden={showMessage}
+          className={`col-start-1 row-start-1 self-center transition-opacity duration-500 ${
+            showMessage ? "invisible opacity-0" : "opacity-100"
+          }`}
+        >
+          <h4 className="text-lg text-zinc-500 dark:text-zinc-400 w-full transition-colors hover:text-zinc-800 dark:hover:text-zinc-200">
+            <span className="hidden md:inline">Is your migraine from a Chinook or something else?</span>
+            <span className="md:hidden">Tap to find out if your migraine from a Chinook or something else?</span>
+          </h4>
+          <p className="hidden md:block text-xs text-zinc-400 dark:text-zinc-500 mt-1">(click to find out)</p>
+        </div>
       </div>
 
-      {showMessage && (
-        <div className="flex justify-end max-w-lg mx-auto w-full mt-16">
-          <button
-            onClick={() => setShowMore(true)}
-            className="hover-glitch px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-          >
-            <span className="glitch-label">Why?</span>
-          </button>
-        </div>
-      )}
+      <div className="relative z-20 flex justify-end max-w-lg mx-auto w-full mt-16">
+        <button
+          onClick={() => setShowMore(true)}
+          className="hover-glitch px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        >
+          <span className="glitch-label">Why?</span>
+        </button>
+      </div>
 
       {showMore && (
         <PressureModal

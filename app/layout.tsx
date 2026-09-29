@@ -29,7 +29,7 @@ export default function RootLayout({
     >
       <link
         rel="stylesheet"
-        href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&f[]=pencerio&display=swap"
+        href="https://api.fontshare.com/v2/css?f[]=switzer@400,500,600,700&display=swap"
         precedence="default"
       />
       <body className="min-h-full flex flex-col">{children}</body>
