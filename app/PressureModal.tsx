@@ -1,14 +1,15 @@
 "use client";
 
+import { useState } from "react";
+import { WINDOWS, type ChangeWindow } from "./windows";
+import { changeColor } from "./changeColor";
+
 interface Props {
   onClose: () => void;
   todayMean: number;
   yesterdayMean: number;
-  diff: number;
-  rising: boolean;
-  falling: boolean;
-  bigChange: boolean;
   latest: number | null;
+  changes: Partial<Record<ChangeWindow, number>>;
   dateLabel: string;
   locationName: string;
 }
@@ -17,14 +18,16 @@ export default function PressureModal({
   onClose,
   todayMean,
   yesterdayMean,
-  diff,
-  rising,
-  falling,
-  bigChange,
   latest,
+  changes,
   dateLabel,
   locationName,
 }: Props) {
+  const [hours, setHours] = useState<ChangeWindow>(48);
+  const diff = changes[hours];
+  const rising = diff !== undefined && diff > 0.5;
+  const falling = diff !== undefined && diff < -0.5;
+
   return (
     <>
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
@@ -44,21 +47,34 @@ export default function PressureModal({
         </div>
 
         <div className="text-center py-4">
-          <span
-            className={`text-6xl font-bold tabular-nums ${
-              bigChange
-                ? "text-rose-600/50 dark:text-rose-400/50"
-                : "text-zinc-900 dark:text-zinc-400"
-            }`}
-          >
-            {diff >= 0 ? "+" : ""}
-            {diff.toFixed(1)}
-          </span>
-          <span className="ml-2 text-xl text-zinc-500 dark:text-zinc-400">
-            hPa
-          </span>
+          <div className="inline-flex mb-4 rounded-lg border border-zinc-200 dark:border-zinc-800 p-0.5">
+            {WINDOWS.map((h) => (
+              <button
+                key={h}
+                onClick={() => setHours(h)}
+                aria-pressed={hours === h}
+                className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+                  hours === h
+                    ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
+                    : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+                }`}
+              >
+                {h}h
+              </button>
+            ))}
+          </div>
+          <div>
+            <span className={`text-6xl font-bold tabular-nums ${changeColor(diff)}`}>
+              {diff === undefined ? "—" : `${diff >= 0 ? "+" : ""}${diff.toFixed(1)}`}
+            </span>
+            <span className="ml-2 text-xl text-zinc-500 dark:text-zinc-400">
+              hPa
+            </span>
+          </div>
           <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1">
-            {rising ? "rising" : falling ? "falling" : "steady"}
+            {diff === undefined
+              ? "no data"
+              : `${rising ? "rising" : falling ? "falling" : "steady"} over the last ${hours} hours`}
           </p>
           <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-3 px-4">
             Pressure changes greater than 10hPa in a short period of time can

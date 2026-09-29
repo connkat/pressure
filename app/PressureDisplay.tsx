@@ -2,29 +2,27 @@
 
 import { useState } from "react";
 import PressureModal from "./PressureModal";
+import { changeColor } from "./changeColor";
+import type { ChangeWindow } from "./windows";
 
 interface Props {
   message: string;
-  bigChange: boolean;
   todayMean: number;
   yesterdayMean: number;
-  diff: number;
-  rising: boolean;
-  falling: boolean;
+  diff: number | undefined;
   latest: number | null;
+  changes: Partial<Record<ChangeWindow, number>>;
   dateLabel: string;
   locationName: string;
 }
 
 export default function PressureDisplay({
   message,
-  bigChange,
   todayMean,
   yesterdayMean,
   diff,
-  rising,
-  falling,
   latest,
+  changes,
   dateLabel,
   locationName,
 }: Props) {
@@ -48,13 +46,12 @@ export default function PressureDisplay({
       <div className="text-center cursor-pointer" onClick={() => setShowMessage((v) => !v)}>
         {showMessage ? (
           <>
-            <p className="mt-6 text-4xl font-semibold tabular-nums text-zinc-700 dark:text-zinc-300">
-              {diff >= 0 ? "+" : ""}
-              {diff.toFixed(1)}
+            <p className={`mt-6 text-4xl font-semibold tabular-nums ${changeColor(diff)}`}>
+              {diff === undefined ? "—" : `${diff >= 0 ? "+" : ""}${diff.toFixed(1)}`}
               <span className="text-base font-normal text-zinc-400 dark:text-zinc-500 ml-1">hPa</span>
             </p>
             <p className="text-sm text-zinc-400 dark:text-zinc-500 mt-1">
-              change since yesterday
+              change in the last 48 hours
             </p>
             <p className="mt-24 text-base font-medium text-zinc-500 dark:text-zinc-400">
               {message}
@@ -87,11 +84,8 @@ export default function PressureDisplay({
           onClose={() => setShowMore(false)}
           todayMean={todayMean}
           yesterdayMean={yesterdayMean}
-          diff={diff}
-          rising={rising}
-          falling={falling}
-          bigChange={bigChange}
           latest={latest}
+          changes={changes}
           dateLabel={dateLabel}
           locationName={locationName}
         />
