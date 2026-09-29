@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { WINDOWS, type ChangeWindow } from "./windows";
+import { WINDOWS, type ChangeWindow, type HourlyPoint } from "./windows";
+import PressureChart from "./PressureChart";
 import { changeColor } from "./changeColor";
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
   yesterdayMean: number;
   latest: number | null;
   changes: Partial<Record<ChangeWindow, number>>;
+  history: HourlyPoint[];
   dateLabel: string;
   locationName: string;
 }
@@ -20,6 +22,7 @@ export default function PressureModal({
   yesterdayMean,
   latest,
   changes,
+  history,
   dateLabel,
   locationName,
 }: Props) {
@@ -76,6 +79,9 @@ export default function PressureModal({
               ? "no data"
               : `${rising ? "rising" : falling ? "falling" : "steady"} over the last ${hours} hours`}
           </p>
+          <div className="mt-4">
+            <PressureChart key={hours} points={history.slice(-(hours + 1))} />
+          </div>
           <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-3 px-4">
             Pressure changes greater than 10hPa in a short period of time can
             cause migraines. If you are sensitive to pressure changes, then even

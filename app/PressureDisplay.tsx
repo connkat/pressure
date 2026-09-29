@@ -3,7 +3,7 @@
 import { useState } from "react";
 import PressureModal from "./PressureModal";
 import { changeColor } from "./changeColor";
-import type { ChangeWindow } from "./windows";
+import type { ChangeWindow, HourlyPoint } from "./windows";
 
 interface Props {
   message: string;
@@ -12,6 +12,7 @@ interface Props {
   diff: number | undefined;
   latest: number | null;
   changes: Partial<Record<ChangeWindow, number>>;
+  history: HourlyPoint[];
   dateLabel: string;
   locationName: string;
 }
@@ -23,6 +24,7 @@ export default function PressureDisplay({
   diff,
   latest,
   changes,
+  history,
   dateLabel,
   locationName,
 }: Props) {
@@ -92,6 +94,7 @@ export default function PressureDisplay({
           yesterdayMean={yesterdayMean}
           latest={latest}
           changes={changes}
+          history={history}
           dateLabel={dateLabel}
           locationName={locationName}
         />

@@ -1,6 +1,6 @@
 import { connection } from "next/server";
 import PressureDisplay from "./PressureDisplay";
-import { WINDOWS, type ChangeWindow } from "./windows";
+import { WINDOWS, type ChangeWindow, type HourlyPoint } from "./windows";
 
 const BLAME_MESSAGES = [
   "Nope, not the weather. Go drink some water.",
@@ -86,6 +86,13 @@ export default async function Home() {
     }
   }
 
+  // Hourly readings for the longest window, oldest first, ending at the current hour
+  const maxWindow = Math.max(...WINDOWS);
+  const history: HourlyPoint[] = [];
+  for (let i = Math.max(0, currentIndex - maxWindow); i <= currentIndex; i++) {
+    history.push({ time: data.hourly.time[i], pressure: allPressure[i] });
+  }
+
   const diff = changes[48];
   const size = diff === undefined ? 0 : Math.abs(diff);
 
@@ -105,6 +112,7 @@ export default async function Home() {
         diff={diff}
         latest={latest}
         changes={changes}
+        history={history}
         dateLabel={formatDate(today)}
         locationName={LOCATION_NAME}
       />

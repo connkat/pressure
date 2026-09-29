@@ -127,5 +127,6 @@ body {
 }
 
 .glitch-modal {
-  animation: glitch 3s steps(1) infinite, glitch-border 3s steps(1) infinite;
+  transform: translate(-50%, -50%);
+  animation: glitch-border 3s steps(1) infinite;
 }
