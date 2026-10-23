@@ -77,7 +77,7 @@ export default function LocationPicker({ locationName, isDefault }: Props) {
         onClick={() => setOpen(true)}
         className="px-4 py-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
       >
-        📍 {locationName}
+        {locationName}
       </button>
     );
   }

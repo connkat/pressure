@@ -1,6 +1,6 @@
 import { connection } from "next/server";
 import PressureDisplay from "./PressureDisplay";
-import { WINDOWS, type ChangeWindow, type HourlyPoint } from "./windows";
+import { MAX_HOURS, PAST_DAYS, changeOver, type HourlyPoint } from "./windows";
 
 const BLAME_MESSAGES = [
   "Nope, not the weather. Go drink some water.",
@@ -81,7 +81,7 @@ export default async function Home({
     `https://api.open-meteo.com/v1/forecast` +
     `?latitude=${location.lat}&longitude=${location.lon}` +
     `&hourly=surface_pressure&current=surface_pressure` +
-    `&past_days=2&forecast_days=1` +
+    `&past_days=${PAST_DAYS}&forecast_days=1` +
     `&timezone=auto`;
 
   const res = await fetch(url, { cache: "no-store" });
@@ -91,32 +91,22 @@ export default async function Home({
   const data: OpenMeteoResponse = await res.json();
 
   const allPressure = data.hourly.surface_pressure;
-  const yesterdayValues = allPressure.slice(24, 48);
-  const todayValues = allPressure.slice(48).filter((v) => v !== null);
+  const todayStart = PAST_DAYS * 24;
+  const yesterdayValues = allPressure.slice(todayStart - 24, todayStart);
+  const todayValues = allPressure.slice(todayStart).filter((v) => v !== null);
 
   const yesterdayMean = mean(yesterdayValues);
   const todayMean = mean(todayValues);
 
-  // Change from N hours ago to the current hour
+  // Hourly readings for the longest selectable window, oldest first, ending at the current hour
   const currentHour = data.current.time.slice(0, 13) + ":00";
   const currentIndex = data.hourly.time.indexOf(currentHour);
-  const changes: Partial<Record<ChangeWindow, number>> = {};
-  for (const hours of WINDOWS) {
-    const now = allPressure[currentIndex];
-    const then = allPressure[currentIndex - hours];
-    if (currentIndex >= hours && now != null && then != null) {
-      changes[hours] = now - then;
-    }
-  }
-
-  // Hourly readings for the longest window, oldest first, ending at the current hour
-  const maxWindow = Math.max(...WINDOWS);
   const history: HourlyPoint[] = [];
-  for (let i = Math.max(0, currentIndex - maxWindow); i <= currentIndex; i++) {
+  for (let i = Math.max(0, currentIndex - MAX_HOURS); i <= currentIndex; i++) {
     history.push({ time: data.hourly.time[i], pressure: allPressure[i] });
   }
 
-  const diff = changes[48];
+  const diff = changeOver(history, 48);
   const size = diff === undefined ? 0 : Math.abs(diff);
 
   const blameMessage =
@@ -134,7 +124,6 @@ export default async function Home({
         yesterdayMean={yesterdayMean}
         diff={diff}
         latest={latest}
-        changes={changes}
         history={history}
         dateLabel={formatDate(today)}
         locationName={location.name}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import PressureModal from "./PressureModal";
 import LocationPicker from "./LocationPicker";
 import { changeColor } from "./changeColor";
-import type { ChangeWindow, HourlyPoint } from "./windows";
+import type { HourlyPoint } from "./windows";
 
 interface Props {
   message: string;
@@ -12,7 +12,6 @@ interface Props {
   yesterdayMean: number;
   diff: number | undefined;
   latest: number | null;
-  changes: Partial<Record<ChangeWindow, number>>;
   history: HourlyPoint[];
   dateLabel: string;
   locationName: string;
@@ -25,7 +24,6 @@ export default function PressureDisplay({
   yesterdayMean,
   diff,
   latest,
-  changes,
   history,
   dateLabel,
   locationName,
@@ -97,7 +95,6 @@ export default function PressureDisplay({
           todayMean={todayMean}
           yesterdayMean={yesterdayMean}
           latest={latest}
-          changes={changes}
           history={history}
           dateLabel={dateLabel}
           locationName={locationName}
