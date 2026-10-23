@@ -28,7 +28,25 @@ function pickRandom(messages: string[]): string {
 
 const DEFAULT_LAT = 51.0447;
 const DEFAULT_LON = -114.0719;
-const LOCATION_NAME = "Calgary, AB";
+const DEFAULT_LOCATION_NAME = "Calgary, AB";
+
+type SearchParams = { [key: string]: string | string[] | undefined };
+
+// Reads ?lat=&lon=&name= from the URL, falling back to Calgary
+function resolveLocation(params: SearchParams) {
+  const lat = Number(params.lat);
+  const lon = Number(params.lon);
+  const valid =
+    typeof params.lat === "string" &&
+    typeof params.lon === "string" &&
+    Number.isFinite(lat) && Math.abs(lat) <= 90 &&
+    Number.isFinite(lon) && Math.abs(lon) <= 180;
+  if (!valid) {
+    return { lat: DEFAULT_LAT, lon: DEFAULT_LON, name: DEFAULT_LOCATION_NAME, isDefault: true };
+  }
+  const name = typeof params.name === "string" && params.name ? params.name : `${lat}, ${lon}`;
+  return { lat, lon, name, isDefault: false };
+}
 
 function formatDate(d: Date): string {
   return d.toISOString().split("T")[0];
@@ -50,13 +68,18 @@ interface OpenMeteoResponse {
   };
 }
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
   await connection();
+  const location = resolveLocation(await searchParams);
   const today = new Date();
 
   const url =
     `https://api.open-meteo.com/v1/forecast` +
-    `?latitude=${DEFAULT_LAT}&longitude=${DEFAULT_LON}` +
+    `?latitude=${location.lat}&longitude=${location.lon}` +
     `&hourly=surface_pressure&current=surface_pressure` +
     `&past_days=2&forecast_days=1` +
     `&timezone=auto`;
@@ -114,7 +137,8 @@ export default async function Home() {
         changes={changes}
         history={history}
         dateLabel={formatDate(today)}
-        locationName={LOCATION_NAME}
+        locationName={location.name}
+        isDefaultLocation={location.isDefault}
       />
     </main>
   );

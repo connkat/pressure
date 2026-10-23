@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import PressureModal from "./PressureModal";
+import LocationPicker from "./LocationPicker";
 import { changeColor } from "./changeColor";
 import type { ChangeWindow, HourlyPoint } from "./windows";
 
@@ -15,6 +16,7 @@ interface Props {
   history: HourlyPoint[];
   dateLabel: string;
   locationName: string;
+  isDefaultLocation: boolean;
 }
 
 export default function PressureDisplay({
@@ -27,6 +29,7 @@ export default function PressureDisplay({
   history,
   dateLabel,
   locationName,
+  isDefaultLocation,
 }: Props) {
   const [showMore, setShowMore] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -78,7 +81,8 @@ export default function PressureDisplay({
         </div>
       </div>
 
-      <div className="relative z-20 flex justify-end max-w-lg mx-auto w-full mt-16">
+      <div className="relative z-20 flex justify-between items-start max-w-lg mx-auto w-full mt-16">
+        <LocationPicker locationName={locationName} isDefault={isDefaultLocation} />
         <button
           onClick={() => setShowMore(true)}
           className="hover-glitch px-4 py-2 text-sm font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
